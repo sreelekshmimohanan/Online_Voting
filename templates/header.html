@@ -1,0 +1,93 @@
+{% load static %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Mexant - Financial HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-574-mexant.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+<!--
+
+TemplateMo 574 Mexant
+
+https://templatemo.com/tm-574-mexant
+
+-->
+  </head>
+
+<body>
+
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <nav class="main-nav">
+                      <!-- ***** Logo Start ***** -->
+                      <a href="index" class="logo">
+                          <img src="{% static 'assets/images/logo.png' %}" alt="">
+                      </a>
+                      <!-- ***** Logo End ***** -->
+                      <!-- ***** Menu Start ***** -->
+                      <ul class="nav">
+                        {% if request.session.details %}
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/viewuser" class="">View User</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/elect">Add Election commission</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/seats">Add Seat</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/logout">Logout</a></li>
+                        {% else %}
+                          {% if request.session.uid %}
+                            <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
+                            <li><a href="http://127.0.0.1:8000/pro">Profile</a></li>
+                            <li><a href="http://127.0.0.1:8000/viewcandidate">Candidate</a></li>
+                            <li><a href="http://127.0.0.1:8000/results">Result</a></li>
+                            <li><a href="http://127.0.0.1:8000/logout">Logout</a></li>
+                          {% else %}
+                            {% if request.session.wid %}
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/userview">Viewuser</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/candiii">Add Candidate</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/viewvote"> vote</a></li>
+                              <li><a href="contact-us.html">Contact Support</a></li>
+                            {% else %}
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/login">Login</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/reg">Register</a></li>
+                            {% endif %}
+                          {% endif %}
+                        {% endif %}
+                      </ul>        
+                      <a class='menu-trigger'>
+                          <span>Menu</span>
+                      </a>
+                      <!-- ***** Menu End ***** -->
+                  </nav>
+              </div>
+          </div>
+      </div>
+  </header>
+
+
+{% endblock %}
