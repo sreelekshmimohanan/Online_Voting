@@ -1,42 +1,62 @@
 {% load static %}
 {% include 'header.html' %}
 
-<section class="py-5">
+<section class="py-5 bg-light">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="section-heading text-center mb-4">
-          <h4>Registered Users</h4>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>ID Proof</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for user in users %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.id_proof }}</td>
-                <td>{{ user.status }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="6" class="text-center">No users found.</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+      <div class="col-lg-12">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Registered Users</h4>
+            <small>Manage user registrations and approvals</small>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>ID Proof</th>
+                    <th>Voter ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in users %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td><a href="/media/{{ user.id_proof }}" target="_blank" class="btn btn-info btn-sm">View Proof</a></td>
+                    <td>{{ user.voter_id }}</td>
+                    <td>
+                      <span class="badge {% if user.status == 'accepted' %}bg-success{% elif user.status == 'rejected' %}bg-danger{% else %}bg-warning{% endif %}">
+                        {{ user.status|title }}
+                      </span>
+                    </td>
+                    <td>
+                      {% if user.status == 'pending' %}
+                        <a href="{% url 'update_status' user.id 'accepted' %}" class="btn btn-success btn-sm me-1">Accept</a>
+                        <a href="{% url 'update_status' user.id 'rejected' %}" class="btn btn-danger btn-sm">Reject</a>
+                      {% else %}
+                        {{ user.status|title }}
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8" class="text-center text-muted">No users found.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

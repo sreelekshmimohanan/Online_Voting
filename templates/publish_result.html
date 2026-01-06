@@ -1,0 +1,48 @@
+{% load static %}
+{% include 'header.html' %}
+
+
+
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card shadow">
+          <div class="card-header bg-success text-white text-center">
+            <h4 class="mb-0">Publish Results</h4>
+            <p class="mb-0">Select an election to publish the voting results</p>
+          </div>
+          <div class="card-body">
+            <form action="{% url 'publish_result' %}" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="election" class="form-label fw-bold">Election</label>
+                <select name="election" id="election" class="form-select" required>
+                  <option value="">Select Election</option>
+                  {% for elect in elections %}
+                    <option value="{{ elect.id }}">{{ elect.legislature.name }} - {{ elect.year }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-success btn-lg">
+                  <i class="fas fa-bullhorn me-2"></i>Publish Results
+                </button>
+              </div>
+            </form>
+            {% if messages %}
+              <div class="mt-3">
+                <div class="alert alert-{{ messages.0.tags }} alert-dismissible fade show" role="alert">
+                  <i class="fas fa-info-circle me-2"></i>{{ messages.0 }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'footer.html' %}

@@ -1,0 +1,82 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+
+  <section class="contact-us-form">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+          <div class="section-heading">
+            <h6>Add Legislature</h6>
+            <h4>Add Legislature Details</h4>
+          </div>
+        </div>
+        <div class="col-lg-10 offset-lg-1">
+          <form id="contact" action="{% url 'add_legislature' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-6">
+                <fieldset>
+                  <input type="text" name="name" id="name" placeholder="Name..." autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset>
+                  <textarea name="description" id="description" placeholder="Description..." required></textarea>
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <button type="submit" id="form-submit" class="orange-button">Add Legislature</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+          {% if msg %}
+            <div class="alert alert-success">{{ msg }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="section-heading text-center mb-4">
+            <h4>Existing Legislatures</h4>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for leg in legislatures %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ leg.name }}</td>
+                  <td>{{ leg.description }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="3" class="text-center">No legislatures found.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% include 'footer.html' %}
+
+{% endblock %}

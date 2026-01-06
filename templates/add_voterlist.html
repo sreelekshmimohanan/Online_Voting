@@ -1,0 +1,80 @@
+{% load static %}
+{% include 'header.html' %}
+
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Apply to Voter List</h4>
+            <small>Select Election and Constituency</small>
+          </div>
+          <div class="card-body">
+            <form action="{% url 'add_voterlist' %}" method="post">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="election" class="form-label">Election</label>
+                  <select name="election" id="election" class="form-select" required>
+                    <option value="">Select Election</option>
+                    {% for elect in elections %}
+                      <option value="{{ elect.id }}" data-legislature="{{ elect.legislature.id }}">{{ elect.legislature.name }} - {{ elect.year }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="constituency" class="form-label">Constituency</label>
+                  <select name="constituency" id="constituency" class="form-select" required>
+                    <option value="">Select Constituency</option>
+                    {% for const in constituencies %}
+                      <option value="{{ const.id }}" data-legislature="{{ const.legislature.id }}">{{ const.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary btn-lg">Apply to Voter List</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if msg %}
+  <div class="container mt-3">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ msg }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+{% endif %}
+
+{% include 'footer.html' %}
+
+<script>
+document.getElementById('election').addEventListener('change', function() {
+    var selectedElection = this.options[this.selectedIndex];
+    var legislatureId = selectedElection.getAttribute('data-legislature');
+    var constituencySelect = document.getElementById('constituency');
+    var options = constituencySelect.options;
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].value === '') {
+            options[i].style.display = 'block';
+        } else {
+            var constLegId = options[i].getAttribute('data-legislature');
+            if (constLegId === legislatureId) {
+                options[i].style.display = 'block';
+            } else {
+                options[i].style.display = 'none';
+            }
+        }
+    }
+    // Reset constituency selection
+    constituencySelect.value = '';
+});
+</script>

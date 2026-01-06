@@ -2,8 +2,9 @@
 {% block content %}
 
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
+
 
   <head>
 
@@ -13,7 +14,7 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Mexant - Financial HTML5 Template</title>
+    <title>Online Voting Platform</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -44,37 +45,48 @@ https://templatemo.com/tm-574-mexant
               <div class="col-12">
                   <nav class="main-nav">
                       <!-- ***** Logo Start ***** -->
-                      <a href="index" class="logo">
-                          <img src="{% static 'assets/images/logo.png' %}" alt="">
+                      <a href="{% url 'first' %}" class="logo">
+                          <div class="stylish-heading">
+                              <h1 class="brand-title" style="margin: 0; font-size: 1.8rem; font-weight: 700; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                                  <i class="fas fa-vote-yea text-primary me-2" style="color: #007bff !important;"></i>
+                                  <span class="brand-main" style="color: #007bff;">Online</span>
+                                  <span class="brand-accent" style="color: #28a745;">Voting</span>
+                                  <span class="brand-subtitle" style="font-size: 0.8rem; color: #6c757d; margin-left: 5px;">Platform</span>
+                              </h1>
+                              <p class="brand-tagline" style="margin: 0; font-size: 0.7rem; color: #adb5bd; font-style: italic; letter-spacing: 1px;">Secure • Transparent • Democratic</p>
+                          </div>
                       </a>
                       <!-- ***** Logo End ***** -->
-                      <!-- ***** Menu Start ***** -->
+                      
                       <ul class="nav">
-                        {% if request.session.details %}
-                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
-                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/viewuser" class="">View User</a></li>
-                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/elect">Add Election commission</a></li>
-                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/seats">Add Seat</a></li>
-                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/logout">Logout</a></li>
+
+                        {% if request.session.admin %}
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/viewuser" class="active">View User</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/add_staff" class="active">Add Election commission(Staff)</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/add_legislature" class="active">Add Legislature</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/add_constituency" class="active">Add constituency</a></li>
+                          <li class="scroll-to-section"><a href="http://127.0.0.1:8000/logout" class="active">Logout</a></li>
                         {% else %}
                           {% if request.session.uid %}
                             <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
-                            <li><a href="http://127.0.0.1:8000/pro">Profile</a></li>
-                            <li><a href="http://127.0.0.1:8000/viewcandidate">Candidate</a></li>
-                            <li><a href="http://127.0.0.1:8000/results">Result</a></li>
-                            <li><a href="http://127.0.0.1:8000/logout">Logout</a></li>
+                            <li><a href="http://127.0.0.1:8000/add_voterlist" class="active">Apply Voter list</a></li>
+                            <li><a href="http://127.0.0.1:8000/view_candidate" class="active">View Candidate</a></li>
+                            <li><a href="http://127.0.0.1:8000/results" class="active">Result</a></li>
+                            <li><a href="http://127.0.0.1:8000/logout" class="active">Logout</a></li>
                           {% else %}
                             {% if request.session.wid %}
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/userview">Viewuser</a></li>
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/candiii">Add Candidate</a></li>
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/viewvote"> vote</a></li>
-                              <li><a href="contact-us.html">Contact Support</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/viewuser" class="active">Viewuser</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/view_voterlist" class="active">View Voter List</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/add_election" class="active">Add Election</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/add_candidate" class="active">Add Candidate</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/publish_result" class="active">Publish Result</a></li>
+                              <li><a href="http://127.0.0.1:8000/logout">Logout</a></li>
                             {% else %}
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index">Home</a></li>
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/login">Login</a></li>
-                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/reg">Register</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/index" class="active">Home</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/login" class="active">Login</a></li>
+                              <li class="scroll-to-section"><a href="http://127.0.0.1:8000/reg" class="active">Register</a></li>
                             {% endif %}
                           {% endif %}
                         {% endif %}
