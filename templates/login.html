@@ -1,47 +1,44 @@
 {% load static %}
-{% block content %}
 {% include 'header.html' %}
 
-
-  <section class="contact-us-form">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-          <div class="section-heading">
-            <h6>Contact Us</h6>
-            <h4>Register Here</h4>
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Login</h4>
+            <small>Enter your credentials to access the system</small>
           </div>
-        </div>
-        <div class="col-lg-10 offset-lg-1">
-          <form id="contact" action="login_view" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-             
-              
-              <div class="col-lg-6">
-                <fieldset>
-                  <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your E-mail..." required="">
-                </fieldset>
+          <div class="card-body">
+            <form action="{% url 'login_view' %}" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Your Email..." required>
               </div>
-              <div class="col-lg-6">
-                <fieldset>
-                  <input type="password" name="password" id="subject" placeholder="password..." autocomplete="on" >
-                </fieldset>
-              
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Your Password..." required>
               </div>
-             
-              <div class="col-lg-12">
-                <fieldset>
-                  <button type="submit" id="form-submit" class="orange-button">Send Message</button>
-                </fieldset>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Login</button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <br><br><br>
+{% if message %}
+  <div class="container mt-3">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+{% endif %}
+
 {% include 'footer.html' %}
-{% endblock %}

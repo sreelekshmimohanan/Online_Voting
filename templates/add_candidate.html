@@ -1,0 +1,90 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Add Candidate</h4>
+            <p class="mb-0">Enter the candidate details below</p>
+          </div>
+          <div class="card-body">
+            <form action="{% url 'add_candidate' %}" method="post">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="candidate_name" class="form-label fw-bold">Candidate Name</label>
+                  <input type="text" name="candidate_name" id="candidate_name" class="form-control" placeholder="Enter candidate name..." autocomplete="on" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="party_name" class="form-label fw-bold">Party Name</label>
+                  <input type="text" name="party_name" id="party_name" class="form-control" placeholder="Enter party name..." autocomplete="on" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="photo" class="form-label fw-bold">Photo URL</label>
+                  <input type="url" name="photo" id="photo" class="form-control" placeholder="Enter photo URL..." autocomplete="on" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="election" class="form-label fw-bold">Election</label>
+                  <select name="election" id="election" class="form-select" required>
+                    <option value="">Select Election</option>
+                    {% for elect in elections %}
+                      <option value="{{ elect.id }}" data-legislature="{{ elect.legislature.id }}">{{ elect.legislature.name }} - {{ elect.year }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="constituency" class="form-label fw-bold">Constituency</label>
+                  <select name="constituency" id="constituency" class="form-select" required>
+                    <option value="">Select Constituency</option>
+                    {% for const in constituencies %}
+                      <option value="{{ const.id }}" data-legislature="{{ const.legislature.id }}">{{ const.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary btn-lg">Add Candidate</button>
+                </div>
+              </div>
+            </form>
+            {% if msg %}
+              <div class="alert alert-success mt-3">
+                <i class="fas fa-check-circle"></i> {{ msg }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'footer.html' %}
+
+<script>
+document.getElementById('election').addEventListener('change', function() {
+    var selectedElection = this.options[this.selectedIndex];
+    var legislatureId = selectedElection.getAttribute('data-legislature');
+    var constituencySelect = document.getElementById('constituency');
+    var options = constituencySelect.options;
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].value === '') {
+            options[i].style.display = 'block';
+        } else {
+            var constLegId = options[i].getAttribute('data-legislature');
+            if (constLegId === legislatureId) {
+                options[i].style.display = 'block';
+            } else {
+                options[i].style.display = 'none';
+            }
+        }
+    }
+    // Reset constituency selection
+    constituencySelect.value = '';
+});
+</script>
+
+{% endblock %}

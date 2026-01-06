@@ -1,0 +1,90 @@
+{% load static %}
+{% include 'header.html' %}
+
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow mb-4">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">View Candidates</h4>
+            <small>Select Election to View Candidates</small>
+          </div>
+          <div class="card-body">
+            <form action="{% url 'view_candidate' %}" method="post">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-8">
+                  <label for="election" class="form-label">Election</label>
+                  <select name="election" id="election" class="form-select" required>
+                    <option value="">Select Election</option>
+                    {% for elect in elections %}
+                      <option value="{{ elect.id }}">{{ elect.legislature.name }} - {{ elect.year }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                  <button type="submit" class="btn btn-primary w-100">View Candidates</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {% if candidates %}
+          <div class="text-center mb-4">
+            <h4 class="text-primary">Candidates for {{ selected_election.legislature.name }} - {{ selected_election.year }}</h4>
+            <p class="text-muted">Select your preferred candidate to cast your vote</p>
+            {% if already_voted %}
+              <div class="alert alert-success border-0 shadow-sm">
+                <i class="fas fa-check-circle me-2"></i>You have already voted in this election.
+              </div>
+            {% endif %}
+          </div>
+          <div class="row g-4">
+            {% for candidate in candidates %}
+              <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm border-0 hover-card">
+                  <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                      <img src="{{ candidate.photo }}" alt="{{ candidate.candidate_name }}" class="img-fluid rounded-circle border border-3 border-primary" style="width: 120px; height: 120px; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <h5 class="card-title fw-bold text-dark mb-2">{{ candidate.candidate_name }}</h5>
+                    <p class="card-text">
+                      <span class="badge bg-secondary fs-6 px-3 py-2">{{ candidate.party_name }}</span>
+                    </p>
+                    {% if candidate.constituency %}
+                      <p class="text-muted small mb-3">
+                        <i class="fas fa-map-marker-alt me-1"></i>{{ candidate.constituency.name }}
+                      </p>
+                    {% endif %}
+                    {% if not already_voted %}
+                      <form method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="candidate_id" value="{{ candidate.id }}">
+                        <input type="hidden" name="election_id" value="{{ selected_election.id }}">
+                        <button type="submit" class="btn btn-success btn-lg px-4 py-2 fw-bold">
+                          <i class="fas fa-vote-yea me-2"></i>Vote
+                        </button>
+                      </form>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-12">
+                <div class="alert alert-warning text-center border-0 shadow-sm">
+                  <i class="fas fa-exclamation-triangle me-2"></i>No candidates found for this election in your constituency.
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% include 'footer.html' %}

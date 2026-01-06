@@ -1,0 +1,139 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">Add Election</h4>
+            <p class="mb-0">Enter the election details below</p>
+          </div>
+          <div class="card-body">
+            <form action="{% url 'add_election' %}" method="post">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="legislature" class="form-label fw-bold">Legislature</label>
+                  <select name="legislature" id="legislature" class="form-select" required>
+                    <option value="">Select Legislature</option>
+                    {% for leg in legislatures %}
+                      <option value="{{ leg.id }}">{{ leg.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="year" class="form-label fw-bold">Year</label>
+                  <input type="number" name="year" id="year" class="form-control" placeholder="Enter year..." autocomplete="on" required min="2020" max="2030">
+                </div>
+                <div class="col-md-4">
+                  <label for="jurisdiction" class="form-label fw-bold">Jurisdiction</label>
+                  <select name="jurisdiction" id="jurisdiction" class="form-select" required>
+                    <option value="">Select Jurisdiction</option>
+                    <option value="Not Applicable">Not Applicable</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                    <option value="Ladakh">Ladakh</option>
+                    <option value="Puducherry">Puducherry</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                  </select>
+                </div>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary btn-lg">Add Election</button>
+                </div>
+              </div>
+            </form>
+            {% if msg %}
+              <div class="alert alert-success mt-3">
+                <i class="fas fa-check-circle"></i> {{ msg }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="card shadow">
+          <div class="card-header bg-secondary text-white text-center">
+            <h4 class="mb-0">Existing Elections</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>Legislature</th>
+                    <th>Year</th>
+                    <th>Jurisdiction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for election in elections %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ election.legislature.name }}</td>
+                    <td><span class="badge bg-info">{{ election.year }}</span></td>
+                    <td>{{ election.jurisdiction }}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="4" class="text-center py-4">
+                      <div class="alert alert-info mb-0">
+                        <i class="fas fa-info-circle"></i> No elections found.
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'footer.html' %}
+
+{% endblock %}

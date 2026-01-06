@@ -1,0 +1,95 @@
+{% load static %}
+{% include 'header.html' %}
+
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white text-center">
+            <h4 class="mb-0">View Election Results</h4>
+            <small>Select Election and Constituency</small>
+          </div>
+          <div class="card-body">
+            <form action="{% url 'results' %}" method="post">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="election" class="form-label">Election</label>
+                  <select name="election" id="election" class="form-select" required>
+                    <option value="">Select Election</option>
+                    {% for elect in elections %}
+                      <option value="{{ elect.id }}">{{ elect.legislature.name }} - {{ elect.year }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="constituency" class="form-label">Constituency</label>
+                  <select name="constituency" id="constituency" class="form-select" required>
+                    <option value="">Select Constituency</option>
+                    {% for const in constituencies %}
+                      <option value="{{ const.id }}">{{ const.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary btn-lg">View Results</button>
+                </div>
+              </div>
+            </form>
+            {% if selected_results %}
+              <hr>
+              <h5 class="text-center mb-3">Results for {{ selected_results.election.legislature.name }} - {{ selected_results.election.year }} | Constituency: {{ selected_results.constituency.name }}</h5>
+              {% with candidates_list=selected_results.candidates_votes %}
+                {% if candidates_list|length > 1 and candidates_list.0.votes == candidates_list.1.votes %}
+                  <div class="alert alert-warning text-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Tie detected: Multiple candidates have the same highest vote count. Result: NOT APPLICABLE
+                  </div>
+                {% endif %}
+                <div class="table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Candidate</th>
+                        <th>Party</th>
+                        <th>Votes</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for cv in candidates_list %}
+                        <tr {% if candidates_list|length <= 1 or candidates_list.0.votes != candidates_list.1.votes %}{% if forloop.first %}class="table-success"{% endif %}{% endif %}>
+                          <td>
+                            {% if candidates_list|length <= 1 or candidates_list.0.votes != candidates_list.1.votes %}{% if forloop.first %}<i class="fas fa-trophy text-warning me-2"></i>{% endif %}{% endif %}
+                            {{ cv.candidate.candidate_name }}
+                          </td>
+                          <td>{{ cv.candidate.party_name }}</td>
+                          <td><span class="badge bg-info">{{ cv.votes }}</span></td>
+                          <td>
+                            {% if candidates_list|length > 1 and candidates_list.0.votes == candidates_list.1.votes %}
+                              <span class="badge bg-warning fs-6 px-3 py-2">NOT APPLICABLE</span>
+                            {% elif forloop.first %}
+                              <span class="badge bg-success fs-6 px-3 py-2">Won</span>
+                            {% else %}
+                              <span class="badge bg-danger fs-6 px-3 py-2">Lost</span>
+                            {% endif %}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endwith %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% include 'footer.html' %}
+
+{% include 'footer.html' %}
